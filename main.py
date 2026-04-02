@@ -2,9 +2,27 @@ import random
 import os
 
 
+def config(what, hm):
+    while True:
+        x = input(f"{what} ({hm}): ")
+        if x != "":
+            try:
+                size = int(x)
+                return size
+            except:
+                continue
+        break
+    return hm
+
+
 if __name__ == "__main__":
-    log_lvl = 2
+    log_lvl = 2 # 0 |  1 | 2 | 3
+    # a just error
     size = 2048
+    
+    size = config("size", size)
+    log_lvl = config("lvl_see", log_lvl)
+
     original_data = "Hello, World!"
     
 
@@ -13,14 +31,27 @@ if __name__ == "__main__":
 how_manny_see = 100
 if log_lvl == 0:
     how_manny_see = 1
-elif log_lvl == 2:
+elif log_lvl >= 2:
+    how_manny_see = 500
+elif log_lvl >= 3:
     how_manny_see = 1000
 
-def test_print(message, lvl=1):
+def test_print(message, lvl=1, notes=[]):
     if __name__ == "__main__":
         if log_lvl <= lvl:
+            if log_lvl == 2 and lvl == 2:
+                os.system("clear")
             print(message)
-            
+            if log_lvl == 2 and lvl == 2:
+                print()
+                for i, v in enumerate(notes):
+                    mes = "____" 
+                    if v == 1:
+                        mes = "WORKING..."
+                    elif v == 2:
+                        mes = "NICE"
+
+                    print(f"Check out | Make_sure_its_working() [{i + 1}] [{mes}]")
 
 
 # Ez ai irta nekem (is_prime fuggvenyt)
@@ -64,7 +95,7 @@ def convert_to_byte(data):
     return int(data, 2)
 
 def get_prime_number(they_wont_be=[]):
-    test_print("get_prime_number()", 2)
+    test_print("get_prime_number()", 3)
     try_number = 0
     while True:
         try_number += 1
@@ -77,7 +108,7 @@ def get_prime_number(they_wont_be=[]):
             return byte
         
         if try_number % how_manny_see == 0:
-            test_print(f"Make Prime number... {try_number} -")
+            test_print(f"Make Prime number... {try_number} -", 3)
 
 
 
@@ -116,7 +147,7 @@ def get_keys_with_n(primes):
     try:
         d = pow(e, -1, En)
     except:
-        test_print("ERROR get_keys_with_n() and I dont know what!!!! /////////////////// ", 2)
+        test_print("ERROR get_keys_with_n() and I dont know what!!!! /////////////////// ", 3)
         return None
 
 
@@ -145,8 +176,6 @@ def convert_from_byte(byte_data):
     return "".join(chr(c) for c in byte_data)
 
 def secret(byte_data, keys):
-    test_print("secret()")
-    
     secret_data = []
     for i in byte_data:
         counting_data = counting(keys[0], keys[1], i)
@@ -157,31 +186,45 @@ def secret(byte_data, keys):
 
 byte_data_test = make_to_byte(original_data)
 def make_sure_its_working(keys):
+    notes = [0, 0, 0, 0]
     test1 = [keys[0], keys[1]]
     test2 = [keys[0], keys[2]]
     secret_data1 = secret(byte_data_test, test1)
+    notes[0] = 1
+    test_print("Check out | Make_sure_its_working() [1] [WORKING...]", 2, notes)
     if secret_data1 is not None:
+        notes[0] = 2 
+        notes[1] = 1
+        test_print("Check out | Make_sure_its_working() [2] [WORKING...]", 2, notes)
         secret_data2 = secret(byte_data_test, test2)
         if secret_data2 is not None:
+            notes[1] = 2
+            notes[2] = 1
+            test_print("Check out | Make_sure_its_working() [3] [WORKING...]", 2, notes)
             decode_data1 = secret(secret_data1, test2)
             if convert_from_byte(decode_data1) == original_data:
+                notes[2] = 2
+                notes[3] = 1
+                test_print("Check out | Make_sure_its_working() [4] [LAST] [WORKING...]", 2, notes)
                 decode_data2 = secret(secret_data2, test1)
                 if convert_from_byte(decode_data2) == original_data:
+                    notes [3] = 2
+                    test_print("Everything is good", 2, notes)
                     return True
                 else:
-                    test_print("[ERROR] 4 Something was WRONG and I dont know what!!! ------_______++++++++======", 2)
+                    test_print("[ERROR] 4 Something was WRONG and I dont know what!!! ------_______++++++++======", 3)
   
 
             
             else:
-                 test_print("[ERROR] 3 Something was WRONG and I dont know what!!! ------_______++++++++======", 2)
+                 test_print("[ERROR] 3 Something was WRONG and I dont know what!!! ------_______++++++++======", 3)
   
 
         else: 
-             test_print("[ERROR] 2 Something was not prime ------_______++++++++======", 2)
+             test_print("[ERROR] 2 Something was not prime ------_______++++++++======", 3)
 
     else:
-        test_print("[ERROR] 1 Something was not prime ------_______++++++++======" , 2)
+        test_print("[ERROR] 1 Something was not prime ------_______++++++++======" , 3)
     
     return False
 
